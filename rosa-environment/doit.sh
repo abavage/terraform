@@ -22,3 +22,6 @@ cat <<EOF>> /home/ec2-user/.aws/credentials
 aws_access_key_id = 
 aws_secret_access_key = 
 EOF
+
+chown -R ec2-user:ec2-user /home/ec2-user/bin
+chown -R ec2-user:ec2-user /home/ec2-user/.aws
