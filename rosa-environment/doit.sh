@@ -23,8 +23,8 @@ aws_access_key_id =
 aws_secret_access_key = 
 EOF
 
-chown -R ec2-user:ec2-user /home/ec2-user/bin
-chown -R ec2-user:ec2-user /home/ec2-user/.aws
-
 curl -s -O https://get.helm.sh/helm-v3.16.3-linux-amd64.tar.gz
 tar -zxpf helm-v3.16.3-linux-amd64.tar.gz -C /home/ec2-user/bin
+
+chown -R ec2-user:ec2-user /home/ec2-user/bin
+chown -R ec2-user:ec2-user /home/ec2-user/.aws
