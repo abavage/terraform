@@ -17,6 +17,18 @@ variable "cluster_name" {
   description = "The name of the ROSA cluster to create"
 }
 
+variable "admin_credentials_username" {
+  default     = "cluster-admin"
+  type        = string
+  description = "Set this on the command line via env var 'export TF_VAR_admin_credentials_username='cluster-admin'"
+}
+
+variable "admin_credentials_password" {
+  default     = null
+  type        = string
+  description = "Set this on the command line via env var 'export TF_VAR_admin_credentials_password='some_password'"
+}
+
 variable "additional_tags" {
   default = {
     Terraform   = "true"
@@ -41,7 +53,7 @@ variable "worker_node_replicas" {
 variable "aws_subnet_ids" {
   type        = list(any)
   description = "A list of either the public or public + private subnet IDs to use for the cluster blocks to use for the cluster"
-  default     = ["subnet-0618c783eb5e7d68d","subnet-04f3cb112c7a970a4","subnet-07f6b7fecdde3dbaf","subnet-06511f10e8be2f6df","subnet-091c04a3fa4b853ee","subnet-0e86b30af2db5f23c"]
+  default     = ["subnet-045a40da0e39082af","subnet-087737d06bb97acaf","subnet-02c0f5e2c09ad7159","subnet-0b9b7f46856ac8a9f","subnet-06a8f5c8f7d04082f","subnet-0fc71601f1a497c26"]
 }
 
 variable "private_cluster" {

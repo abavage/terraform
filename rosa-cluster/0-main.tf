@@ -31,11 +31,11 @@ locals {
   region_azs = var.multi_az ? slice([for zone in data.aws_availability_zones.available.names : format("%s", zone)], 0, 3) : slice([for zone in data.aws_availability_zones.available.names : format("%s", zone)], 0, 1)
 }
 
-resource "random_string" "random_name" {
-  length  = 6
-  special = false
-  upper   = false
-}
+#resource "random_string" "random_name" {
+#  length  = 6
+#  special = false
+#  upper   = false
+#}
 
 locals {
   worker_node_replicas = var.multi_az ? 3 : 2
@@ -67,18 +67,30 @@ module "rosa-hcp" {
   create_account_roles   = true
   create_operator_roles  = true
   create_admin_user      = true
-}
+  admin_credentials_username = var.admin_credentials_username
+  admin_credentials_password = var.admin_credentials_password
 
-module "htpasswd_idp" {
-  source = "terraform-redhat/rosa-hcp/rhcs//modules/idp"
 
-  cluster_id         = module.rosa-hcp.cluster_id
-  name               = "htpasswd-idp"
-  idp_type           = "htpasswd"
-  htpasswd_idp_users = [
-    { username = "some-user", 
-      password = "Some-Complicated-123-Password"
+  identity_providers = {
+    htpasswd-idp = {
+      name               = "htpasswd-idp"
+      idp_type           = "htpasswd"
+      htpasswd_idp_users = jsonencode([{ username = "test-user", password =  "Some-Complicated-123-Password"}])
     }
-  ]
+  }
 }
 
+#module "htpasswd_idp" {
+#  source = "terraform-redhat/rosa-hcp/rhcs//modules/idp"
+#
+#  cluster_id         = module.rosa-hcp.cluster_id
+#  name               = "htpasswd-idp"
+#  idp_type           = "htpasswd"
+#  htpasswd_idp_users = jsonencode( 
+#    [
+#      { username = "some-user", 
+#        password = "Some-Complicated-123-Password"
+#      }
+#    ]
+#  )
+#}
