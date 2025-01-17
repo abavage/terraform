@@ -1,15 +1,15 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">= 4.20.0"
-    }
-    rhcs = {
-      version = "= 1.6.5"
-      source  = "terraform-redhat/rhcs"
-    }
-  }
-}
+#terraform {
+#  required_providers {
+#    aws = {
+#      source  = "hashicorp/aws"
+#      version = ">= 4.20.0"
+#    }
+#    rhcs = {
+#      version = "= 1.6.8"
+#      source  = "terraform-redhat/rhcs"
+#    }
+#  }
+#}
 
 # Export token using the RHCS_TOKEN environment variable
 provider "rhcs" {}
@@ -63,7 +63,10 @@ module "rosa-hcp" {
   aws_availability_zones = local.region_azs
   create_oidc            = true
   private                = var.private_cluster
-  aws_subnet_ids         = var.aws_subnet_ids
+  #aws_subnet_ids         = var.aws_subnet_ids
+  #aws_subnet_ids         = data.aws_subnets.subnets.ids
+  aws_subnet_ids         = concat(slice(data.aws_subnets.public_subnets.ids, 0, 1), slice(data.aws_subnets.private_subnets.ids, 0, 3))
+
   create_account_roles   = true
   create_operator_roles  = true
   create_admin_user      = true

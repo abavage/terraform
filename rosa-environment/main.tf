@@ -23,7 +23,8 @@ resource "aws_vpc" "vpc" {
   tags = merge(
     var.common_tags,
     {
-      Name = "${var.cluster_name}"
+      #Name = "${var.cluster_name}"
+      Name = "rosa-vpc"
     },
   )
   lifecycle {
@@ -50,6 +51,7 @@ resource "aws_subnet" "rosa_public_subnets" {
       Name                     = join("-", ["rosa-public-subnet", split("-", each.key)[2]])
       vpc_id                   = "${aws_vpc.vpc.id}"
       "kubernetes.io/role/elb" = 1
+      subnet_type              = "public"
     },
   )
   lifecycle {
@@ -71,6 +73,7 @@ resource "aws_subnet" "rosa_private_subnets" {
       Name                              = join("-", ["rosa-private-subnet", split("-", each.key)[2]])
       vpc_id                            = "${aws_vpc.vpc.id}"
       "kubernetes.io/role/internal-elb" = 1
+      subnet_type                       = "private"
     },
   )
   lifecycle {
